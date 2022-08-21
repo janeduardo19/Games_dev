@@ -34,20 +34,20 @@ public class Player extends Entity {
 	
 	public void update() {
 		moved = false;
-		if(right) {
+		if(right && World.isFree((int)(x + speed), this.getY())) {
 			dir = right_dir;
 			moved = true;
 			x+=speed;
-		}else if(left) {
+		}else if(left && World.isFree((int)(x - speed), this.getY())) {
 			dir = left_dir;
 			moved = true;
 			x-=speed;
 		}
 		
-		if(up) {
+		if(up && World.isFree(this.getX(), (int)(y - speed))) {
 			moved = true;
 			y-=speed;
-		}else if(down) {
+		}else if(down && World.isFree(this.getX(), (int)(y + speed))) {
 			moved = true;
 			y+=speed;
 		}

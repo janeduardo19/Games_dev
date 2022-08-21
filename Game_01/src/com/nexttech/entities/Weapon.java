@@ -1,4 +1,4 @@
-package com.nextech.entities;
+package com.nexttech.entities;
 
 import java.awt.image.BufferedImage;
 

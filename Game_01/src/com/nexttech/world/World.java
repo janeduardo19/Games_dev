@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.nextech.entities.*;
+import com.nexttech.entities.*;
 import com.nexttech.main.Game;
 
 public class World {

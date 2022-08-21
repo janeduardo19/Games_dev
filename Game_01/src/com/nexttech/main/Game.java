@@ -14,8 +14,8 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import com.nextech.entities.Entity;
-import com.nextech.entities.Player;
+import com.nexttech.entities.Entity;
+import com.nexttech.entities.Player;
 import com.nexttech.graficos.Spritesheet;
 import com.nexttech.world.World;
 

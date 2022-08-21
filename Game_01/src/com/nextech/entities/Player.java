@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import com.nexttech.main.Game;
+import com.nexttech.world.Camera;
 
 public class Player extends Entity {
 
@@ -61,13 +62,16 @@ public class Player extends Entity {
 			}
 		}
 		
+		Camera.x = this.getX() - (Game.WIDTH/2);
+		Camera.y = this.getY() - (Game.HEIGHT/2);
+		
 	}
 	
 	public void render(Graphics g) {
 		if(dir == right_dir) {
-			g.drawImage(rightPlayer[index], this.getX(), this.getY(), null);
+			g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 		}else if(dir == left_dir) {
-			g.drawImage(leftPlayer[index], this.getX(), this.getY(), null);
+			g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 		}
 	}
 

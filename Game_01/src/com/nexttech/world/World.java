@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.nextech.entities.*;
+import com.nexttech.main.Game;
+
 public class World {
 	
 	private Tile[] tiles;
@@ -22,18 +25,37 @@ public class World {
 			for(int xx = 0; xx < map.getWidth(); xx++) {
 				for(int yy = 0; yy < map.getHeight(); yy++) {
 					int pixelAtual = pixels[xx + (yy*map.getWidth())];
-					if( pixelAtual == 0xFF000000) {
-						//Floor
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
-					}else if(pixelAtual == 0xFFFFF6F6) {
-						//Wall
-						tiles[xx + (yy * WIDTH)] = new WallTile(xx*16, yy*16, Tile.TILE_WALL);
-					}else if(pixelAtual == 0xFF091ED9) {
-						//Player
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
-					} else {
-						//Floor
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
+					tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
+					switch (pixelAtual) {
+						case 0xFF000000:
+							//Floor
+							tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
+							break;
+						case 0xFFFFF6F6:
+							//Wall
+							tiles[xx + (yy * WIDTH)] = new WallTile(xx*16, yy*16, Tile.TILE_WALL);
+							break;
+						case 0xFF091ED9:
+							//Player
+							Game.player.setX(xx*16);
+							Game.player.setY(yy*16);
+							break;
+						case 0xFFF80000:
+							//Enemy
+							Game.entities.add(new Enemy(xx*16, yy*16, 16, 16, Entity.ENEMY_EN));
+							break;
+						case 0xFF6C6C6C:
+							//Weapon
+							Game.entities.add(new Weapon(xx*16, yy*16, 16, 16, Entity.WEAPON_EN));
+							break;
+						case 0xFFE77878:
+							//Life Pack
+							Game.entities.add(new Lifepack(xx*16, yy*16, 16, 16, Entity.LIFEPACK_EN));
+							break;
+						case 0xFFFFEC07:
+							//Bullet
+							Game.entities.add(new Bullet(xx*16, yy*16, 16, 16, Entity.BULLET_EN));
+							break;
 					}
 				}
 				

@@ -3,6 +3,8 @@ package com.nextech.entities;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import com.nexttech.main.Game;
+
 public class Entity {
 
 	protected double x;
@@ -11,6 +13,10 @@ public class Entity {
 	protected int height;
 	
 	private BufferedImage sprite;
+	public static BufferedImage LIFEPACK_EN = Game.spritesheet.getSprite(6*16, 0, 16, 16);
+	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7*16, 0, 16, 16);
+	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(6*16, 16, 16, 16);
+	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(7*16, 16, 16, 16);
 	
 	public Entity(int x, int y, int width, int height, BufferedImage sprite) {
 		this.setX(x);

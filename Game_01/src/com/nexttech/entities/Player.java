@@ -20,7 +20,7 @@ public class Player extends Entity {
 	private BufferedImage[] leftPlayer;
 	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
-		super(x, y, width, height, sprite);
+		super(x, y, width, height, null);
 		
 		rightPlayer = new BufferedImage[4];
 		leftPlayer = new BufferedImage[4];

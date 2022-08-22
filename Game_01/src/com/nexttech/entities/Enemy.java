@@ -1,6 +1,5 @@
 package com.nexttech.entities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -11,12 +10,20 @@ import com.nexttech.world.World;
 
 public class Enemy extends Entity{
 
-	private double speed = 1;
+	private double speed = 0.8;
+	private int frames = 0, maxFrames = 16, index = 0, maxIndex = 1;
+	private BufferedImage[] enemy;
 	//Definições da mascara de colisao
-	private int maskx = 6, masky = 6, maskw = 4, maskh = 7;
+	private int maskx = 3, masky = 8, maskw = 10, maskh = 6;
 	
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
+		
+		enemy = new BufferedImage[2];
+		for(int i = 0; i <= maxIndex; i++) {
+			enemy[i] = Game.spritesheet.getSprite(112 + (i*16), 16, 16, 16);
+		}
+		
 	}
 	
 	public void update() {
@@ -39,10 +46,20 @@ public class Enemy extends Entity{
 				&& !isColliding(this.getX(), (int)(y-speed))) {
 			y-=speed;
 		}
+		
+		frames++;
+		if(frames == maxFrames) {
+			frames = 0;
+			index++;
+			if(index > maxIndex) {
+				index = 0;
+			}
+		}
 	}
 	
 	public void render(Graphics g) {
-		super.render(g);
+		g.drawImage(enemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+		
 		//Renderiza mascara atual
 		//g.setColor(Color.BLUE);
 		//g.fillRect(getX() + maskx - Camera.x, getY() + masky - Camera.y, maskw, maskh);

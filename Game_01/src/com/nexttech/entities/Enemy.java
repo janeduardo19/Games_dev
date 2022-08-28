@@ -56,11 +56,12 @@ public class Enemy extends Entity{
 		} else {
 			// Estamos colidindo
 			if(Game.rand.nextInt(100) < 10) {
-				Game.player.life -= Game.rand.nextInt(3);
-				if(Game.player.life <= 0) {
+				Game.player.setLife(Game.player.getLife() - Game.rand.nextInt(3));
+				if(Game.player.getLife() <= 0) {
 					//Game over!!
+					//System.exit(1);
 				}
-				System.out.println("Vida: " + Game.player.life);
+				//System.out.println("Vida: " + Game.player.life);
 			}
 		}
 		

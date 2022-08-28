@@ -19,7 +19,9 @@ public class Player extends Entity {
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
 	
-	public static double life = 100, maxLife = 100;
+	private static double life = 100;
+	private static double maxLife = 100;
+	public int ammo = 0;
 	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
@@ -65,7 +67,8 @@ public class Player extends Entity {
 			}
 		}
 		
-		this.checkCollisionLifepack();
+		checkCollisionLifepack();
+		checkCollisionAmmo();
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT);
@@ -78,20 +81,52 @@ public class Player extends Entity {
 		}else if(dir == left_dir) {
 			g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 		}
+		
+		//g.setColor(Color.BLUE);
+		//g.fillRect(getX() + maskx - Camera.x, getY() + masky - Camera.y, mwidth, mheight);
+	}
+	
+	public void checkCollisionAmmo() {
+		for(int i = 0; i < Game.entities.size(); i++) {
+			Entity atual = Game.entities.get(i);
+			if(Entity.isColliding(this, atual)) {
+				if(atual instanceof Bullet) {
+					ammo += 10;
+					//System.out.println("Munição:" + ammo);
+					Game.entities.remove(atual);
+				}
+			}
+		}
 	}
 	
 	public void checkCollisionLifepack() {
 		for(int i = 0; i < Game.lifepacks.size(); i++) {
 			Entity atual = Game.lifepacks.get(i);
 			if(Entity.isColliding(this, atual)) {
-				life += 10;
-				if(life > 100) {
-					life = 100;
+				setLife(getLife() + 10);
+				if(getLife() > 100) {
+					setLife(100);
 				}
 				Game.lifepacks.remove(atual);
 				Game.entities.remove(atual);
 			}
 		}
+	}
+
+	public static double getLife() {
+		return life;
+	}
+
+	public static void setLife(double life) {
+		Player.life = life;
+	}
+
+	public static double getMaxLife() {
+		return maxLife;
+	}
+
+	public static void setMaxLife(double maxLife) {
+		Player.maxLife = maxLife;
 	}
 
 }

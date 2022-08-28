@@ -1,6 +1,5 @@
 package com.nexttech.entities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -14,7 +13,7 @@ public class Entity {
 	protected double y;
 	protected int width;
 	protected int height;
-	private int maskx, masky, mwidth, mheight; 
+	protected int maskx, masky, mwidth, mheight; 
 	
 	private BufferedImage sprite;
 	public static BufferedImage LIFEPACK_EN = Game.spritesheet.getSprite(6*16, 0, 16, 16);

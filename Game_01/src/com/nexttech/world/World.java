@@ -40,6 +40,7 @@ public class World {
 							//Player
 							Game.player.setX(xx*16);
 							Game.player.setY(yy*16);
+							Game.player.setMask(3, 0, 9, 16);
 							break;
 						case 0xFFF80000:
 							//Enemy
@@ -60,7 +61,9 @@ public class World {
 							break;
 						case 0xFFFFEC07:
 							//Bullet
-							Game.entities.add(new Bullet(xx*16, yy*16, 16, 16, Entity.BULLET_EN));
+							Bullet ammo = new Bullet(xx*16, yy*16, 16, 16, Entity.BULLET_EN);
+							ammo.setMask(7, 8, 2, 8);
+							Game.entities.add(ammo);
 							break;
 					}
 				}

@@ -16,6 +16,6 @@ public class UI {
 		g.fillRect(8, 8, (int)((Player.getLife()/Player.getMaxLife())*80), 8);
 		g.setFont(new Font("arial", Font.BOLD, 8));
 		g.setColor(Color.white);
-		g.drawString((int)Game.player.getLife() + "/" + (int)Game.player.getMaxLife(), 25, 15);
+		g.drawString((int)Game.player.getLife() + "/" + (int)Game.player.getMaxLife(), 24, 15);
 	}
 }

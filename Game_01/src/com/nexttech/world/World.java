@@ -53,7 +53,10 @@ public class World {
 							break;
 						case 0xFFE77878:
 							//Life Pack
-							Game.entities.add(new Lifepack(xx*16, yy*16, 16, 16, Entity.LIFEPACK_EN));
+							Lifepack pack = new Lifepack(xx*16, yy*16, 16, 16, Entity.LIFEPACK_EN);
+							pack.setMask(2, 10, 10, 5);
+							Game.entities.add(pack);
+							Game.lifepacks.add(pack);
 							break;
 						case 0xFFFFEC07:
 							//Bullet

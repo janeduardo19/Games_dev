@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 
 import com.nexttech.entities.Enemy;
 import com.nexttech.entities.Entity;
+import com.nexttech.entities.Lifepack;
 import com.nexttech.entities.Player;
 import com.nexttech.graficos.Spritesheet;
 import com.nexttech.graficos.UI;
@@ -34,6 +35,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	private BufferedImage image;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
+	public static List<Lifepack> lifepacks;
 	public static Spritesheet spritesheet;
 	public static World world;
 	public static Player player;
@@ -50,6 +52,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
+		lifepacks = new ArrayList<Lifepack>();
 		spritesheet = new Spritesheet("/spritesheet_02.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);

@@ -65,6 +65,8 @@ public class Player extends Entity {
 			}
 		}
 		
+		this.checkCollisionLifepack();
+		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT);
 		
@@ -75,6 +77,20 @@ public class Player extends Entity {
 			g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 		}else if(dir == left_dir) {
 			g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+		}
+	}
+	
+	public void checkCollisionLifepack() {
+		for(int i = 0; i < Game.lifepacks.size(); i++) {
+			Entity atual = Game.lifepacks.get(i);
+			if(Entity.isColliding(this, atual)) {
+				life += 10;
+				if(life > 100) {
+					life = 100;
+				}
+				Game.lifepacks.remove(atual);
+				Game.entities.remove(atual);
+			}
 		}
 	}
 

@@ -2,7 +2,9 @@ package com.nexttech.entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import com.nexttech.graficos.Spritesheet;
 import com.nexttech.main.Game;
 import com.nexttech.world.Camera;
 import com.nexttech.world.World;
@@ -13,27 +15,45 @@ public class Player extends Entity {
 	public int right_dir = 0, left_dir = 1;
 	public int dir = right_dir;
 	public double speed = 1.4;
+	public int ammo = 0;
+	public boolean isDamaged = false;
 	
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 3;
 	private boolean moved = false;
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
-	
-	private static double life = 100;
-	private static double maxLife = 100;
-	public int ammo = 0;
+	private BufferedImage damagePlayer;
+	private double life = 100, maxLife = 100;
+	private int damageFrames = 0;
 	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
 		
 		rightPlayer = new BufferedImage[4];
 		leftPlayer = new BufferedImage[4];
+		damagePlayer = Game.spritesheet.getSprite(0, 16, 16, 16);
 		for(int i = 0; i <= maxIndex; i++) {
 			rightPlayer[i] = Game.spritesheet.getSprite(32 + (i*16), 0, 16, 16);
 		}
 		for(int i = 0; i <= maxIndex; i++) {
 			leftPlayer[i] = Game.spritesheet.getSprite(32 + (i*16), 16, 16, 16);
 		}
+	}
+	
+	public double getLife() {
+		return life;
+	}
+
+	public void setLife(double life) {
+		this.life = life;
+	}
+
+	public double getMaxLife() {
+		return maxLife;
+	}
+
+	public void setMaxLife(double maxLife) {
+		this.maxLife = maxLife;
 	}
 	
 	public void update() {
@@ -70,16 +90,39 @@ public class Player extends Entity {
 		checkCollisionLifepack();
 		checkCollisionAmmo();
 		
+		if(isDamaged) {
+			damageFrames++;
+			if(damageFrames == 6) {
+				damageFrames = 0;
+				isDamaged = false;
+			}
+		}
+		
+		if(life <= 0) {
+			Game.entities = new ArrayList<Entity>();
+			Game.enemies = new ArrayList<Enemy>();
+			Game.lifepacks = new ArrayList<Lifepack>();
+			Game.spritesheet = new Spritesheet("/spritesheet_02.png");
+			Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
+			Game.entities.add(Game.player);
+			Game.world = new World("/map1.png");
+			return;
+		}
+		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);
 		Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT/2), 0, World.HEIGHT*16 - Game.HEIGHT);
 		
 	}
 	
 	public void render(Graphics g) {
-		if(dir == right_dir) {
-			g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		}else if(dir == left_dir) {
-			g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+		if(!isDamaged) { 
+			if(dir == right_dir) {
+				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+			}else if(dir == left_dir) {
+				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+			}
+		} else {
+			g.drawImage(damagePlayer, this.getX() - Camera.x, this.getY() - Camera.y, null);
 		}
 		
 		//g.setColor(Color.BLUE);
@@ -112,21 +155,4 @@ public class Player extends Entity {
 			}
 		}
 	}
-
-	public static double getLife() {
-		return life;
-	}
-
-	public static void setLife(double life) {
-		Player.life = life;
-	}
-
-	public static double getMaxLife() {
-		return maxLife;
-	}
-
-	public static void setMaxLife(double maxLife) {
-		Player.maxLife = maxLife;
-	}
-
 }

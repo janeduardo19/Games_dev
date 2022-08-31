@@ -50,20 +50,22 @@ public class World {
 							break;
 						case 0xFF6C6C6C:
 							//Weapon
-							Game.entities.add(new Weapon(xx*16, yy*16, 16, 16, Entity.WEAPON_EN));
+							Weapon weapon = new Weapon(xx*16, yy*16, 16, 16, Entity.WEAPON_EN);
+							weapon.setMask(0, 6, 16, 4);
+							Game.entities.add(weapon);
 							break;
 						case 0xFFE77878:
 							//Life Pack
-							Lifepack pack = new Lifepack(xx*16, yy*16, 16, 16, Entity.LIFEPACK_EN);
-							pack.setMask(2, 10, 10, 5);
+							LifePotion pack = new LifePotion(xx*16, yy*16, 16, 16, Entity.LIFEPACK_EN);
+							pack.setMask(5, 10, 6, 5);
 							Game.entities.add(pack);
 							Game.lifepacks.add(pack);
 							break;
 						case 0xFFFFEC07:
 							//Bullet
-							Bullet ammo = new Bullet(xx*16, yy*16, 16, 16, Entity.BULLET_EN);
-							ammo.setMask(7, 8, 2, 8);
-							Game.entities.add(ammo);
+							ManaPotion mana = new ManaPotion(xx*16, yy*16, 16, 16, Entity.BULLET_EN);
+							mana.setMask(5, 10, 6, 5);
+							Game.entities.add(mana);
 							break;
 					}
 				}

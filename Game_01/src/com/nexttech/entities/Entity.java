@@ -1,5 +1,6 @@
 package com.nexttech.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -20,6 +21,7 @@ public class Entity {
 	public static BufferedImage WEAPON_EN = Game.spritesheet.getSprite(7*16, 0, 16, 16);
 	public static BufferedImage BULLET_EN = Game.spritesheet.getSprite(6*16, 16, 16, 16);
 	public static BufferedImage ENEMY_EN = Game.spritesheet.getSprite(7*16, 16, 16, 16);
+	public static BufferedImage WEAPON_PL = Game.spritesheet.getSprite(8*16, 0, 16, 16);
 	
 	public Entity(int x, int y, int width, int height, BufferedImage sprite) {
 		this.setX(x);

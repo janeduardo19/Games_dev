@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 
 import com.nexttech.entities.Enemy;
 import com.nexttech.entities.Entity;
-import com.nexttech.entities.Lifepack;
+import com.nexttech.entities.LifePotion;
 import com.nexttech.entities.Player;
 import com.nexttech.graficos.Spritesheet;
 import com.nexttech.graficos.UI;
@@ -36,7 +36,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	private BufferedImage image;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
-	public static List<Lifepack> lifepacks;
+	public static List<LifePotion> lifepacks;
 	public static Spritesheet spritesheet;
 	public static World world;
 	public static Player player;
@@ -53,7 +53,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
-		lifepacks = new ArrayList<Lifepack>();
+		lifepacks = new ArrayList<LifePotion>();
 		spritesheet = new Spritesheet("/spritesheet_02.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
@@ -119,9 +119,9 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
-		g.setFont(new Font("arial", Font.BOLD, 19));
+		/*g.setFont(new Font("arial", Font.BOLD, 19));
 		g.setColor(Color.white);
-		g.drawString("Munição: " + player.ammo, 560, 45);
+		g.drawString("Munição: " + player.man, 560, 45);*/
 		bs.show();
 	}
 	

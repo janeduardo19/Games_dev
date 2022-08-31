@@ -15,7 +15,6 @@ public class Player extends Entity {
 	public int right_dir = 0, left_dir = 1;
 	public int dir = right_dir;
 	public double speed = 1.4;
-	public int ammo = 0;
 	public boolean isDamaged = false;
 	
 	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 3;
@@ -23,8 +22,11 @@ public class Player extends Entity {
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
 	private BufferedImage damagePlayer;
+	private BufferedImage damageWeapon;
 	private double life = 100, maxLife = 100;
+	private double mana = 0, maxMana = 100;
 	private int damageFrames = 0;
+	private boolean hasWeapon = false;
 	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
@@ -32,6 +34,7 @@ public class Player extends Entity {
 		rightPlayer = new BufferedImage[4];
 		leftPlayer = new BufferedImage[4];
 		damagePlayer = Game.spritesheet.getSprite(0, 16, 16, 16);
+		damageWeapon = Game.spritesheet.getSprite(16, 16, 16, 16);
 		for(int i = 0; i <= maxIndex; i++) {
 			rightPlayer[i] = Game.spritesheet.getSprite(32 + (i*16), 0, 16, 16);
 		}
@@ -54,6 +57,22 @@ public class Player extends Entity {
 
 	public void setMaxLife(double maxLife) {
 		this.maxLife = maxLife;
+	}
+	
+	public double getMana() {
+		return mana;
+	}
+
+	public void setMana(double mana) {
+		this.mana = mana;
+	}
+	
+	public double getMaxMana() {
+		return maxMana;
+	}
+
+	public void setMaxMana(double maxMana) {
+		this.maxMana = maxMana;
 	}
 	
 	public void update() {
@@ -87,8 +106,9 @@ public class Player extends Entity {
 			}
 		}
 		
-		checkCollisionLifepack();
-		checkCollisionAmmo();
+		checkCollisionLifePotion();
+		checkCollisionManaPotion();
+		checkCollisionWeapon();
 		
 		if(isDamaged) {
 			damageFrames++;
@@ -101,7 +121,7 @@ public class Player extends Entity {
 		if(life <= 0) {
 			Game.entities = new ArrayList<Entity>();
 			Game.enemies = new ArrayList<Enemy>();
-			Game.lifepacks = new ArrayList<Lifepack>();
+			Game.lifepacks = new ArrayList<LifePotion>();
 			Game.spritesheet = new Spritesheet("/spritesheet_02.png");
 			Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
 			Game.entities.add(Game.player);
@@ -115,34 +135,35 @@ public class Player extends Entity {
 	}
 	
 	public void render(Graphics g) {
+		
 		if(!isDamaged) { 
 			if(dir == right_dir) {
+				if(hasWeapon) {
+					//Desenha arma
+					g.drawImage(WEAPON_PL, this.getX() + 5 - Camera.x, this.getY() + 1 - Camera.y, null);
+				}
 				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 			}else if(dir == left_dir) {
 				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				if(hasWeapon) {
+					//Desenha arma
+					g.drawImage(WEAPON_PL, this.getX() + 5 - Camera.x, this.getY() + 1 - Camera.y, null);
+				}
 			}
 		} else {
 			g.drawImage(damagePlayer, this.getX() - Camera.x, this.getY() - Camera.y, null);
+			if(hasWeapon) {
+				//Desenha arma
+				g.drawImage(damageWeapon, this.getX() + 5 - Camera.x, this.getY() + 1 - Camera.y, null);
+			}
 		}
+		
 		
 		//g.setColor(Color.BLUE);
 		//g.fillRect(getX() + maskx - Camera.x, getY() + masky - Camera.y, mwidth, mheight);
 	}
 	
-	public void checkCollisionAmmo() {
-		for(int i = 0; i < Game.entities.size(); i++) {
-			Entity atual = Game.entities.get(i);
-			if(Entity.isColliding(this, atual)) {
-				if(atual instanceof Bullet) {
-					ammo += 10;
-					//System.out.println("Munição:" + ammo);
-					Game.entities.remove(atual);
-				}
-			}
-		}
-	}
-	
-	public void checkCollisionLifepack() {
+	public void checkCollisionLifePotion() {
 		for(int i = 0; i < Game.lifepacks.size(); i++) {
 			Entity atual = Game.lifepacks.get(i);
 			if(Entity.isColliding(this, atual)) {
@@ -155,4 +176,34 @@ public class Player extends Entity {
 			}
 		}
 	}
+	
+	public void checkCollisionManaPotion() {
+		for(int i = 0; i < Game.entities.size(); i++) {
+			Entity atual = Game.entities.get(i);
+			if(Entity.isColliding(this, atual)) {
+				if(atual instanceof ManaPotion) {
+					setMana(getMana() + 10);
+					if(getMana() > 100) {
+						setMana(100);
+					}
+					Game.entities.remove(atual);
+				}
+			}
+		}
+	}
+	
+	public void checkCollisionWeapon() {
+		for(int i = 0; i < Game.entities.size(); i++) {
+			Entity atual = Game.entities.get(i);
+			if(Entity.isColliding(this, atual)) {
+				if(atual instanceof Weapon) {
+					hasWeapon = true;
+					setMana(100);
+					System.out.println("Pegou a arma!");
+					Game.entities.remove(atual);
+				}
+			}
+		}
+	}
+
 }

@@ -10,7 +10,7 @@ import com.nexttech.world.World;
 
 public class Enemy extends Entity{
 
-	private double speed = 0.8;
+	private double speed = 0.4;
 	private int frames = 0, maxFrames = 16, index = 0, maxIndex = 1;
 	private BufferedImage[] enemy;
 	//Definições da mascara de colisao

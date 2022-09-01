@@ -3,7 +3,7 @@ package com.nexttech.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
+//import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -20,6 +20,7 @@ import com.nexttech.entities.Enemy;
 import com.nexttech.entities.Entity;
 import com.nexttech.entities.LifePotion;
 import com.nexttech.entities.Player;
+import com.nexttech.entities.Shoot;
 import com.nexttech.graficos.Spritesheet;
 import com.nexttech.graficos.UI;
 import com.nexttech.world.World;
@@ -37,6 +38,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<LifePotion> lifepacks;
+	public static List<Shoot> shoots;
 	public static Spritesheet spritesheet;
 	public static World world;
 	public static Player player;
@@ -54,6 +56,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
 		lifepacks = new ArrayList<LifePotion>();
+		shoots = new ArrayList<Shoot>();
 		spritesheet = new Spritesheet("/spritesheet_02.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
@@ -95,6 +98,10 @@ public class Game extends Canvas implements Runnable,KeyListener {
 			Entity e = entities.get(i);
 			e.update();
 		}
+		
+		for(int i = 0; i < shoots.size(); i++) {
+			shoots.get(i).update();
+		}
 	}
 	
 	public void render() {
@@ -113,6 +120,9 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		for(int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.render(g);
+		}
+		for(int i = 0; i < shoots.size(); i++) {
+			shoots.get(i).render(g);
 		}
 		ui.render(g);
 		/***/
@@ -171,6 +181,10 @@ public class Game extends Canvas implements Runnable,KeyListener {
 				e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
 		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_J) {
+			player.shoot = true;
+		}
 	}
 
 	@Override
@@ -189,6 +203,10 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		}else if(e.getKeyCode() == KeyEvent.VK_DOWN ||
 				e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = false;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_J) {
+			player.shoot = false;
 		}
 	}
 

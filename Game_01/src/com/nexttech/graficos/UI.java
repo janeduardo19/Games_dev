@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import com.nexttech.entities.Player;
 import com.nexttech.main.Game;
 
 public class UI {

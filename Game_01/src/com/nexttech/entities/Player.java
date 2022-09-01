@@ -27,6 +27,7 @@ public class Player extends Entity {
 	private double mana = 0, maxMana = 100;
 	private int damageFrames = 0;
 	private boolean hasWeapon = false;
+	public boolean shoot = false;
 	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
@@ -116,6 +117,10 @@ public class Player extends Entity {
 				damageFrames = 0;
 				isDamaged = false;
 			}
+		}
+		
+		if(shoot) {
+			//Criar bala e atirar
 		}
 		
 		if(life <= 0) {

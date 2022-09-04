@@ -119,8 +119,23 @@ public class Player extends Entity {
 			}
 		}
 		
-		if(shoot) {
+		if(shoot && hasWeapon && mana > 0) {
+			mana -= 2;
 			//Criar bala e atirar
+			shoot = false;
+			int dx = 0;
+			int px = 0;
+			int py = 2;
+			if(dir == right_dir) {
+				px = 8;
+				dx = 1;
+			} else {
+				px = 14;
+				dx = -1;
+			}
+			
+			Shoot shootMagic = new Shoot(this.getX() + px, this.getY() + py, 3, 3, null, dx, 0); 
+			Game.shoots.add(shootMagic);
 		}
 		
 		if(life <= 0) {

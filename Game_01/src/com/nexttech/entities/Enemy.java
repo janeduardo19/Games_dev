@@ -13,6 +13,7 @@ public class Enemy extends Entity{
 	private double speed = 0.6;
 	private int frames = 0, maxFrames = 16, index = 0, maxIndex = 1;
 	private BufferedImage[] enemy;
+	private int life = 10;
 	//Definições da mascara de colisao
 	private int maskx = 3, masky = 8, maskw = 10, maskh = 6;
 	
@@ -70,6 +71,14 @@ public class Enemy extends Entity{
 				index = 0;
 			}
 		}
+		
+		collidingBullet();
+		
+		if(life <= 0) {
+			destroySelf();
+			return;
+		}
+		
 	}
 	
 	public void render(Graphics g) {
@@ -78,6 +87,24 @@ public class Enemy extends Entity{
 		//Renderiza mascara atual
 		//g.setColor(Color.BLUE);
 		//g.fillRect(getX() + maskx - Camera.x, getY() + masky - Camera.y, maskw, maskh);
+	}
+	
+	public void destroySelf() {
+		Game.enemies.remove(this);
+		Game.entities.remove(this);
+	}
+	
+	public void collidingBullet() {
+		for(int i = 0; i < Game.shoots.size(); i++) {
+			Entity e = Game.shoots.get(i);
+			if(e instanceof Shoot) {
+				if(Entity.isColliding(this, e)) {
+					life -= 2;
+					Game.shoots.remove(i);
+					return;					
+				}
+			}
+		}
 	}
 	
 	public boolean isCollidingWithPlayer() {

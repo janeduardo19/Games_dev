@@ -16,6 +16,8 @@ public class Enemy extends Entity{
 	private int life = 10;
 	//Definições da mascara de colisao
 	private int maskx = 3, masky = 8, maskw = 10, maskh = 6;
+	private boolean isDamaged = false;
+	private int damageFrames = 0;
 	
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -79,11 +81,22 @@ public class Enemy extends Entity{
 			return;
 		}
 		
+		if(isDamaged) {
+			damageFrames++;
+			if(damageFrames == 6) {
+				damageFrames = 0;
+				isDamaged = false;
+			}
+		}
+		
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(enemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
-		
+		if(!isDamaged) {
+			g.drawImage(enemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+		} else {
+			g.drawImage(Entity.ENEMY_FEEDBACK, this.getX() - Camera.x, this.getY() - Camera.y, null);
+		}
 		//Renderiza mascara atual
 		//g.setColor(Color.BLUE);
 		//g.fillRect(getX() + maskx - Camera.x, getY() + masky - Camera.y, maskw, maskh);
@@ -99,6 +112,7 @@ public class Enemy extends Entity{
 			Entity e = Game.shoots.get(i);
 			if(e instanceof Shoot) {
 				if(Entity.isColliding(this, e)) {
+					isDamaged = true;
 					life -= 2;
 					Game.shoots.remove(i);
 					return;					

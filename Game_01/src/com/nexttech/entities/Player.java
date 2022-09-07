@@ -140,6 +140,8 @@ public class Player extends Entity {
 		
 		if(life <= 0) {
 			/* Game Over! */
+			life = 0;
+			Game.gameState = "GAME_OVER";
 		}
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);

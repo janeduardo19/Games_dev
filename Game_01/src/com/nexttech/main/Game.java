@@ -3,8 +3,10 @@ package com.nexttech.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 //import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 //import java.awt.Graphics2D;
@@ -38,14 +40,18 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	public static World world;
 	public static Player player;
 	public static Random rand;
+	public static String gameState = "NORMAL";
 	public UI ui;
 	
+	private static final long serialVersionUID = 1L;
 	private final int SCALE = 3;
 	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
 	private BufferedImage image;
-	private static final long serialVersionUID = 1L;
 	private Thread thread;
 	private boolean isRunning = true;
+	private boolean showMessageGameOver = true;
+	private boolean restartGame = false;
+	private int framesGameOver = 0;
 	
 	public Game() {
 		rand = new Random();
@@ -96,23 +102,43 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	}
 	
 	public void update() {
-		for(int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
-			e.update();
-		}
-		
-		for(int i = 0; i < shoots.size(); i++) {
-			shoots.get(i).update();
-		}
-		
-		if(enemies.size() == 0) {
-			//Avançar para o próximo level
-			CUR_LEVEL++;
-			if(CUR_LEVEL > MAX_LEVEL) {
-				CUR_LEVEL = 1;
+		if(gameState == "NORMAL") {
+			this.restartGame = false;
+			for(int i = 0; i < entities.size(); i++) {
+				Entity e = entities.get(i);
+				e.update();
 			}
-			String newWorld = "map"+CUR_LEVEL+".png";
-			World.restartGame(newWorld);
+			
+			for(int i = 0; i < shoots.size(); i++) {
+				shoots.get(i).update();
+			}
+			
+			if(enemies.size() == 0) {
+				//Avançar para o próximo level
+				CUR_LEVEL++;
+				if(CUR_LEVEL > MAX_LEVEL) {
+					CUR_LEVEL = 1;
+				}
+				String newWorld = "map"+CUR_LEVEL+".png";
+				World.restartGame(newWorld);
+			}
+		} else if(gameState == "GAME_OVER") {
+			this.framesGameOver++;
+			if(this.framesGameOver == 30) {
+				this.framesGameOver = 0;
+				if(this.showMessageGameOver)
+					showMessageGameOver = false;
+				else
+					showMessageGameOver = true;
+			}
+			
+			if(restartGame) {
+				this.restartGame = false;
+				gameState = "NORMAL";
+				CUR_LEVEL = 1;
+				String newWorld = "map"+CUR_LEVEL+".png";
+				World.restartGame(newWorld);
+			}
 		}
 	}
 	
@@ -144,6 +170,18 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		/*g.setFont(new Font("arial", Font.BOLD, 19));
 		g.setColor(Color.white);
 		g.drawString("Munição: " + player.man, 560, 45);*/
+		if(gameState == "GAME_OVER") {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setColor(new Color(0, 0, 0, 100));
+			g2.fillRect(0, 0, WIDTH*SCALE, HEIGHT*SCALE);
+			g.setFont(new Font("arial", Font.BOLD, 32));
+			g.setColor(Color.RED);
+			g.drawString("Game Over", (WIDTH*SCALE)/2 - 75, (HEIGHT*SCALE)/2 -50);
+			g.setFont(new Font("arial", Font.BOLD, 20));
+			g.setColor(Color.WHITE);
+			if(showMessageGameOver)
+				g.drawString(">Pressione Enter para reiniciar<", (WIDTH*SCALE)/2 - 170, (HEIGHT*SCALE)/2 - 10);
+		}
 		bs.show();
 	}
 	
@@ -196,6 +234,10 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		
 		if(e.getKeyCode() == KeyEvent.VK_J) {
 			player.shoot = true;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			this.restartGame = true;
 		}
 	}
 

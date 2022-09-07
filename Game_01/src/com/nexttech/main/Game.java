@@ -27,14 +27,9 @@ import com.nexttech.world.World;
 
 public class Game extends Canvas implements Runnable,KeyListener {
 	
-	private static final long serialVersionUID = 1L;
 	public static JFrame frame;
-	private Thread thread;
-	private boolean isRunning = true;
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
-	private final int SCALE = 3;
-	private BufferedImage image;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<LifePotion> lifepacks;
@@ -44,6 +39,13 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	public static Player player;
 	public static Random rand;
 	public UI ui;
+	
+	private final int SCALE = 3;
+	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
+	private BufferedImage image;
+	private static final long serialVersionUID = 1L;
+	private Thread thread;
+	private boolean isRunning = true;
 	
 	public Game() {
 		rand = new Random();
@@ -101,6 +103,16 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		
 		for(int i = 0; i < shoots.size(); i++) {
 			shoots.get(i).update();
+		}
+		
+		if(enemies.size() == 0) {
+			//Avançar para o próximo level
+			CUR_LEVEL++;
+			if(CUR_LEVEL > MAX_LEVEL) {
+				CUR_LEVEL = 1;
+			}
+			String newWorld = "map"+CUR_LEVEL+".png";
+			World.restartGame(newWorld);
 		}
 	}
 	

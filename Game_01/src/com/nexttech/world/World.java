@@ -3,10 +3,17 @@ package com.nexttech.world;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import com.nexttech.entities.*;
+import com.nexttech.entities.Enemy;
+import com.nexttech.entities.Entity;
+import com.nexttech.entities.LifePotion;
+import com.nexttech.entities.ManaPotion;
+import com.nexttech.entities.Player;
+import com.nexttech.entities.Weapon;
+import com.nexttech.graficos.Spritesheet;
 import com.nexttech.main.Game;
 
 public class World {
@@ -76,6 +83,25 @@ public class World {
 		}
 	}
 	
+	public void render(Graphics g) {
+		//Inicio camera
+		int xstart = Camera.x >> 4;
+		int ystart = Camera.y >> 4;
+		
+		//Fim camera
+		int xfinal = xstart + (Game.WIDTH >> 4);
+		int yfinal = ystart + (Game.HEIGHT >> 4);
+		
+		for(int xx = xstart; xx <= xfinal; xx++) {
+			for(int yy = ystart; yy <= yfinal; yy++) {
+				if (xx < 0 || yy < 0 || xx >= WIDTH || yy >= HEIGHT)
+					continue;
+				Tile tile = tiles[xx + (yy*WIDTH)];
+				tile.render(g);
+			}
+		}
+	}
+	
 	public static boolean isFree(int xnext, int ynext) {
 		int x1 = xnext / TILE_SIZE;
 		int y1 = ynext / TILE_SIZE;
@@ -96,22 +122,17 @@ public class World {
 				|| (tiles[x4 + (y4*World.WIDTH)] instanceof WallTile));
 	}
 	
-	public void render(Graphics g) {
-		//Inicio camera
-		int xstart = Camera.x >> 4;
-		int ystart = Camera.y >> 4;
-		
-		//Fim camera
-		int xfinal = xstart + (Game.WIDTH >> 4);
-		int yfinal = ystart + (Game.HEIGHT >> 4);
-		
-		for(int xx = xstart; xx <= xfinal; xx++) {
-			for(int yy = ystart; yy <= yfinal; yy++) {
-				if (xx < 0 || yy < 0 || xx >= WIDTH || yy >= HEIGHT)
-					continue;
-				Tile tile = tiles[xx + (yy*WIDTH)];
-				tile.render(g);
-			}
-		}
+	public static void restartGame(String map) {
+		Game.entities.clear();
+		Game.enemies.clear();
+		Game.lifepacks.clear();
+		Game.entities = new ArrayList<Entity>();
+		Game.enemies = new ArrayList<Enemy>();
+		Game.lifepacks = new ArrayList<LifePotion>();
+		Game.spritesheet = new Spritesheet("/spritesheet_02.png");
+		Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
+		Game.entities.add(Game.player);
+		Game.world = new World("/"+map);
+		return;
 	}
 }

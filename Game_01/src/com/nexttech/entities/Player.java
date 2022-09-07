@@ -139,14 +139,7 @@ public class Player extends Entity {
 		}
 		
 		if(life <= 0) {
-			Game.entities = new ArrayList<Entity>();
-			Game.enemies = new ArrayList<Enemy>();
-			Game.lifepacks = new ArrayList<LifePotion>();
-			Game.spritesheet = new Spritesheet("/spritesheet_02.png");
-			Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
-			Game.entities.add(Game.player);
-			Game.world = new World("/map1.png");
-			return;
+			/* Game Over! */
 		}
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);

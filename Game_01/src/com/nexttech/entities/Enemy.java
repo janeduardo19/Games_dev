@@ -95,7 +95,11 @@ public class Enemy extends Entity{
 		if(!isDamaged) {
 			g.drawImage(enemy[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
 		} else {
-			g.drawImage(Entity.ENEMY_FEEDBACK, this.getX() - Camera.x, this.getY() - Camera.y, null);
+			if(index == 0) {
+				g.drawImage(Entity.ENEMY_FEEDBACK, this.getX() - Camera.x, this.getY() - Camera.y, null);
+			} else if(index == 1) {
+				g.drawImage(Entity.ENEMY_FEEDBACK2, this.getX() - Camera.x, this.getY() - Camera.y, null);
+			}
 		}
 		//Renderiza mascara atual
 		//g.setColor(Color.BLUE);

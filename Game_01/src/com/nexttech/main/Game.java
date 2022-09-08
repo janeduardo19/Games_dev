@@ -40,8 +40,9 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	public static World world;
 	public static Player player;
 	public static Random rand;
-	public static String gameState = "NORMAL";
+	public static String gameState = "MENU";
 	public UI ui;
+	public Menu menu;
 	
 	private static final long serialVersionUID = 1L;
 	private final int SCALE = 3;
@@ -59,6 +60,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos
+		menu = new Menu();
 		ui = new UI();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
@@ -102,7 +104,9 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	}
 	
 	public void update() {
-		if(gameState == "NORMAL") {
+		if(gameState == "MENU") {
+			
+		} else if(gameState == "NORMAL") {
 			this.restartGame = false;
 			for(int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);

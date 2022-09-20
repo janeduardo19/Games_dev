@@ -55,7 +55,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	private int framesGameOver = 0;
 	
 	public Game() {
-		Sound.musicBackground.loop();
+		//Sound.musicBackground.loop();
 		rand = new Random();
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
@@ -223,6 +223,11 @@ public class Game extends Canvas implements Runnable,KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			player.jump = true;
+			//System.out.println("Estou pulando!");
+		}
+		
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT ||
 				e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = true;
@@ -265,6 +270,11 @@ public class Game extends Canvas implements Runnable,KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			player.jump = false;
+			//System.out.println("Parei de pular!");
+		}
+		
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT ||
 				e.getKeyCode() == KeyEvent.VK_D) {
 			player.right = false;

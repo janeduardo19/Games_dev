@@ -1,10 +1,8 @@
 package com.nexttech.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
-import com.nexttech.graficos.Spritesheet;
 import com.nexttech.main.Game;
 import com.nexttech.world.Camera;
 import com.nexttech.world.World;
@@ -12,22 +10,27 @@ import com.nexttech.world.World;
 public class Player extends Entity {
 
 	public boolean right, up, left, down;
+	public boolean isDamaged = false;
+	public boolean shoot = false;
+	public boolean jump = false, isJumping = false;
+	public boolean jumpUp = false, jumpDown = false;
 	public int right_dir = 0, left_dir = 1;
 	public int dir = right_dir;
+	public int z = 0;
+	public int jumpHeight = 50, jumpCur = 0;
+	public int jumpSpd = 2;
 	public double speed = 1.4;
-	public boolean isDamaged = false;
 	
-	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 3;
 	private boolean moved = false;
+	private boolean hasWeapon = false;
+	private int frames = 0, maxFrames = 5, index = 0, maxIndex = 3;
+	private int damageFrames = 0;
+	private double life = 100, maxLife = 100;
+	private double mana = 0, maxMana = 100;
 	private BufferedImage[] rightPlayer;
 	private BufferedImage[] leftPlayer;
 	private BufferedImage damagePlayer;
 	private BufferedImage damageWeapon;
-	private double life = 100, maxLife = 100;
-	private double mana = 0, maxMana = 100;
-	private int damageFrames = 0;
-	private boolean hasWeapon = false;
-	public boolean shoot = false;
 	
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
@@ -77,6 +80,33 @@ public class Player extends Entity {
 	}
 	
 	public void update() {
+		if(jump) {
+			if(isJumping == false) {
+				//System.out.println("isJumping está ativo");
+				jump = false;
+				isJumping = true;
+				jumpUp = true;
+			}
+		}
+		
+		if(isJumping == true) {
+			if(jumpUp) {
+				jumpCur += jumpSpd;
+			} else if (jumpDown) {
+				jumpCur -= jumpSpd;
+				if(jumpCur <= 0) {
+					isJumping = false;
+					jumpDown = false;
+					jumpUp = false;
+				}
+			}
+			z = jumpCur;
+			if(jumpCur >= jumpHeight) {
+				jumpUp = false;
+				jumpDown = true;
+			}
+		}
+		
 		moved = false;
 		if(right && World.isFree((int)(x + speed), this.getY())) {
 			dir = right_dir;
@@ -154,24 +184,27 @@ public class Player extends Entity {
 			if(dir == right_dir) {
 				if(hasWeapon) {
 					//Desenha arma
-					g.drawImage(WEAPON_PL, this.getX() + 5 - Camera.x, this.getY() + 1 - Camera.y, null);
+					g.drawImage(WEAPON_PL, this.getX() + 5 - Camera.x, this.getY() + 1 - Camera.y - z, null);
 				}
-				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 			}else if(dir == left_dir) {
-				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 				if(hasWeapon) {
 					//Desenha arma
-					g.drawImage(WEAPON_PL, this.getX() + 5 - Camera.x, this.getY() + 1 - Camera.y, null);
+					g.drawImage(WEAPON_PL, this.getX() + 5 - Camera.x, this.getY() + 1 - Camera.y - z, null);
 				}
 			}
 		} else {
-			g.drawImage(damagePlayer, this.getX() - Camera.x, this.getY() - Camera.y, null);
+			g.drawImage(damagePlayer, this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 			if(hasWeapon) {
 				//Desenha arma
-				g.drawImage(damageWeapon, this.getX() + 5 - Camera.x, this.getY() + 1 - Camera.y, null);
+				g.drawImage(damageWeapon, this.getX() + 5 - Camera.x, this.getY() + 1 - Camera.y - z, null);
 			}
 		}
-		
+		if(isJumping) {
+			g.setColor(Color.black);
+			g.fillOval(this.getX() - Camera.x + 4, this.getY() - Camera.y + 8, 8, 8);
+		}
 		
 		//g.setColor(Color.BLUE);
 		//g.fillRect(getX() + maskx - Camera.x, getY() + masky - Camera.y, mwidth, mheight);

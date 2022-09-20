@@ -32,6 +32,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	public static JFrame frame;
 	public static final int WIDTH = 240;
 	public static final int HEIGHT = 160;
+	public static final int SCALE = 3;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
 	public static List<LifePotion> lifepacks;
@@ -45,7 +46,6 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	public Menu menu;
 	
 	private static final long serialVersionUID = 1L;
-	private final int SCALE = 3;
 	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
 	private BufferedImage image;
 	private Thread thread;
@@ -105,7 +105,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	
 	public void update() {
 		if(gameState == "MENU") {
-			
+			menu.update();
 		} else if(gameState == "NORMAL") {
 			this.restartGame = false;
 			for(int i = 0; i < entities.size(); i++) {
@@ -185,6 +185,8 @@ public class Game extends Canvas implements Runnable,KeyListener {
 			g.setColor(Color.WHITE);
 			if(showMessageGameOver)
 				g.drawString(">Pressione Enter para reiniciar<", (WIDTH*SCALE)/2 - 170, (HEIGHT*SCALE)/2 - 10);
+		} else if(gameState == "MENU") {
+			menu.render(g);
 		}
 		bs.show();
 	}
@@ -231,9 +233,16 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		if(e.getKeyCode() == KeyEvent.VK_UP ||
 				e.getKeyCode() == KeyEvent.VK_W) {
 			player.up = true;
+			if(gameState == "MENU") {
+				menu.up = true;
+			}
 		}else if(e.getKeyCode() == KeyEvent.VK_DOWN ||
 				e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = true;
+			
+			if(gameState == "MENU") {
+				menu.down = true;
+			}
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_J) {
@@ -258,9 +267,15 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		if(e.getKeyCode() == KeyEvent.VK_UP ||
 				e.getKeyCode() == KeyEvent.VK_W) {
 			player.up = false;
+			if(gameState == "MENU") {
+				menu.up = false;
+			}
 		}else if(e.getKeyCode() == KeyEvent.VK_DOWN ||
 				e.getKeyCode() == KeyEvent.VK_S) {
 			player.down = false;
+			if(gameState == "MENU") {
+				menu.down = false;
+			}
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_J) {

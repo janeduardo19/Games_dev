@@ -38,21 +38,21 @@ public class Enemy extends Entity{
 		
 		if (isCollidingWithPlayer() == false) {
 			if((int)x < Game.player.getX() 
-					&& World.isFree((int)(x+speed), this.getY())
+					&& World.isFree((int)(x+speed), this.getY(), z)
 					&& !isColliding((int)(x+speed), this.getY())) {
 				x+=speed;
 			} else if((int)x > Game.player.getX() 
-					&& World.isFree((int)(x-speed), this.getY())
+					&& World.isFree((int)(x-speed), this.getY(), z)
 					&& !isColliding((int)(x-speed), this.getY())) {
 				x-=speed;
 			}
 			
 			if((int)y < Game.player.getY() 
-					&& World.isFree(this.getX(), (int)(y+speed))
+					&& World.isFree(this.getX(), (int)(y+speed), z)
 					&& !isColliding(this.getX(), (int)(y+speed))) {
 				y+=speed;
 			} else if((int)y > Game.player.getY() 
-					&& World.isFree(this.getX(), (int)(y-speed))
+					&& World.isFree(this.getX(), (int)(y-speed), z)
 					&& !isColliding(this.getX(), (int)(y-speed))) {
 				y-=speed;
 			}

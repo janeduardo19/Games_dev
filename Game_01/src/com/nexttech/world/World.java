@@ -102,7 +102,7 @@ public class World {
 		}
 	}
 	
-	public static boolean isFree(int xnext, int ynext) {
+	public static boolean isFree(int xnext, int ynext, int zplayer) {
 		int x1 = xnext / TILE_SIZE;
 		int y1 = ynext / TILE_SIZE;
 		
@@ -116,10 +116,17 @@ public class World {
 		int y4 = (ynext + TILE_SIZE - 1) / TILE_SIZE;
 		
 		//Verifica se o espaço ao redor do player está livre
-		return !((tiles[x1 + (y1*World.WIDTH)] instanceof WallTile)
+		if(!((tiles[x1 + (y1*World.WIDTH)] instanceof WallTile)
 				|| (tiles[x2 + (y2*World.WIDTH)] instanceof WallTile)
 				|| (tiles[x3 + (y3*World.WIDTH)] instanceof WallTile)
-				|| (tiles[x4 + (y4*World.WIDTH)] instanceof WallTile));
+				|| (tiles[x4 + (y4*World.WIDTH)] instanceof WallTile))) {
+			return true;
+		};
+		
+		if(zplayer > 0) {
+			return true;
+		}
+		return false;
 	}
 	
 	public static void restartGame(String map) {

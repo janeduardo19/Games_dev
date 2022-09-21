@@ -1,0 +1,4 @@
+map:;
+vida:AA
+positionX:A=
+positionY:<BB

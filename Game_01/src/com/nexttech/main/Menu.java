@@ -103,6 +103,12 @@ public class Menu {
 				case "vida":
 					Game.player.setLife(Integer.parseInt(spl2[1]));
 					break;
+				case "positionX":
+					Game.player.setX(Integer.parseInt(spl2[1]));
+					break;
+				case "positionY":
+					Game.player.setY(Integer.parseInt(spl2[1]));
+					break;
 			}
 		}
 	}

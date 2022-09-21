@@ -111,8 +111,10 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		} else if(gameState == "NORMAL") {
 			if(this.saveGame) {
 				this.saveGame = false;
-				String[] opt1 = {"map", "vida"};
-				int[] opt2 = {this.CUR_LEVEL, (int) Game.player.getLife()};
+				String[] opt1 = {"map", "vida", "mana", "playerX", "playerY"};
+				int[] opt2 = {this.CUR_LEVEL, 
+						(int) Game.player.getLife(), (int) Game.player.getMana(),
+						Game.player.getX(), Game.player.getY()};
 				Menu.saveGame(opt1, opt2, 10);
 				System.out.println("Jogo salvo!");
 			}

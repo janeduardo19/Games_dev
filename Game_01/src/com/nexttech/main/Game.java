@@ -44,6 +44,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	public static String gameState = "MENU";
 	public UI ui;
 	public Menu menu;
+	public boolean saveGame = false;
 	
 	private static final long serialVersionUID = 1L;
 	private int CUR_LEVEL = 1, MAX_LEVEL = 2;
@@ -108,6 +109,13 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		if(gameState == "MENU") {
 			menu.update();
 		} else if(gameState == "NORMAL") {
+			if(this.saveGame) {
+				this.saveGame = false;
+				String[] opt1 = {"map", "vida"};
+				int[] opt2 = {this.CUR_LEVEL, (int) Game.player.getLife()};
+				Menu.saveGame(opt1, opt2, 10);
+				System.out.println("Jogo salvo!");
+			}
 			this.restartGame = false;
 			for(int i = 0; i < entities.size(); i++) {
 				Entity e = entities.get(i);
@@ -265,6 +273,11 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		if(e.getKeyCode() == KeyEvent.VK_P) {
 			gameState = "MENU";
 			menu.pause = true;
+		}
+		
+		if(e.getKeyCode() == KeyEvent.VK_K) {
+			if(Game.gameState == "NORMAL")
+				this.saveGame = true;
 		}
 	}
 

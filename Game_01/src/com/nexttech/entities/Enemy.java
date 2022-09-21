@@ -56,7 +56,7 @@ public class Enemy extends Entity{
 					&& !isColliding(this.getX(), (int)(y-speed))) {
 				y-=speed;
 			}
-		} else {
+		} else if(Game.player.z == this.z){
 			// Estamos colidindo
 			if(Game.rand.nextInt(100) < 10) {
 				//Sound.hurtEffect.play();

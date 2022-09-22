@@ -4,12 +4,10 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-//import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-//import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -44,6 +42,8 @@ public class Game extends Canvas implements Runnable,KeyListener {
 	public static String gameState = "MENU";
 	public UI ui;
 	public Menu menu;
+	//public InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream("pixelfont.ttf");
+	//public Font newFont;
 	public boolean saveGame = false;
 	
 	private static final long serialVersionUID = 1L;
@@ -73,6 +73,13 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 		world = new World("/map1.png");
+		/*try {
+			newFont = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(26f);
+		} catch (FontFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
 	}
 	
 	public void initFrame() {
@@ -199,6 +206,11 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		} else if(gameState == "MENU") {
 			menu.render(g);
 		}
+		/*
+		g.setFont(newFont);
+		g.setColor(Color.white);
+		g.drawString("Teste com nova fonte", 280, 60);
+		*/
 		bs.show();
 	}
 	
@@ -274,7 +286,7 @@ public class Game extends Canvas implements Runnable,KeyListener {
 		
 		if(e.getKeyCode() == KeyEvent.VK_P) {
 			gameState = "MENU";
-			menu.pause = true;
+			Menu.pause = true;
 		}
 		
 		if(e.getKeyCode() == KeyEvent.VK_K) {

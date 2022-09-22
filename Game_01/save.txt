@@ -1,0 +1,5 @@
+map:<
+vida:A>
+mana::
+playerX:?>
+playerY:A<

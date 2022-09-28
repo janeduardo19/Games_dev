@@ -15,7 +15,7 @@ import com.nexttech.world.World;
 
 public class Entity {
 
-	private BufferedImage sprite;
+	private BufferedImage sprite; 
 	
 	protected double x;
 	protected double y;
@@ -24,11 +24,12 @@ public class Entity {
 	protected double speed;
 	protected List<Node> path;
 	
+	public static BufferedImage COMIDA = Game.spritesheet.getSprite(0, 48, 16, 16);
 	public static Random rand = new Random();
 	public boolean debug = false;
 	public int depth;
 	
-	public Entity(double x,double y,int width,int height,double speed,BufferedImage sprite){
+	public Entity(double x, double y, int width, int height, double speed, BufferedImage sprite){
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
@@ -78,7 +79,7 @@ public class Entity {
 		
 	}
 	
-	public double calculateDistance(int x1,int y1,int x2,int y2) {
+	public double calculateDistance(int x1, int y1, int x2, int y2) {
 		return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	}
 	

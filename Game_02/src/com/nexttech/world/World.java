@@ -3,8 +3,11 @@ package com.nexttech.world;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
+import com.nexttech.entities.Comida;
+import com.nexttech.entities.Entity;
 import com.nexttech.main.Game;
 
 public class World {
@@ -25,19 +28,27 @@ public class World {
 			for(int xx = 0; xx < map.getWidth(); xx++){
 				for(int yy = 0; yy < map.getHeight(); yy++){
 					int pixelAtual = pixels[xx + (yy * map.getWidth())];
-					tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR);
+					tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
 					if(pixelAtual == 0xFF000000){
 						//Floor
-						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16,yy*16,Tile.TILE_FLOOR);
-					}else if(pixelAtual == 0xFFFFFFFF){
+						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
+					}else if(pixelAtual == 0xFF0024F2){
 						//Parede
-						tiles[xx + (yy * WIDTH)] = new WallTile(xx*16,yy*16,Tile.TILE_WALL);
-					}else if(pixelAtual == 0xFF0026FF) {
+						tiles[xx + (yy * WIDTH)] = new WallTile(xx*16, yy*16, Tile.TILE_WALL);
+					}else if(pixelAtual == 0xFFFFD800) {
 						//Player
 						Game.player.setX(xx*16);
 						Game.player.setY(yy*16);
+						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
 					}else if(pixelAtual == 0xFFFF0000) {
 						//Instanciar inimigo e adicionar a lista das entities
+					}else if(pixelAtual == 0xFFFFFFFF) {
+						// Colocar comida 
+						Comida comida = new Comida(xx*16, yy*16, 16, 16, 0, Entity.COMIDA);
+						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
+						Game.entities.add(comida);
+					}else {
+						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
 					}
 				}
 			}

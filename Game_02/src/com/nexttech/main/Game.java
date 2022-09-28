@@ -29,8 +29,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	private Thread thread;
 	private BufferedImage image;
 	
-	public static final int WIDTH = 240;
-	public static final int HEIGHT = 240;
+	public static final int WIDTH = 320;
+	public static final int HEIGHT = 320;
 	public static final int SCALE = 2;
 	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
@@ -49,10 +49,10 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		
 		//Inicializando objetos.
 		spritesheet = new Spritesheet("/spritesheet.png");
-		player = new Player(0,0,16,16,2,spritesheet.getSprite(32, 0,16,16));
+		entities = new ArrayList<Entity>();
+		player = new Player(0, 0, 16, 16, 2, spritesheet.getSprite(80, 0,16, 16));
 		world = new World("/level1.png");
 		ui = new UI();
-		entities = new ArrayList<Entity>();
 		
 		entities.add(player);
 	}

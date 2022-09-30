@@ -7,6 +7,7 @@ public class Sound {
 
 	private AudioClip clip;
 	
+	public static final Sound musicBackground = new Sound("/music.wav");
 	public static final Sound hurtEffect = new Sound("/hurt.wav");
 	
 	private Sound(String name) {

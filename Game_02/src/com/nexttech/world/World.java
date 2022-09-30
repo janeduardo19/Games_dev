@@ -47,6 +47,7 @@ public class World {
 						Comida comida = new Comida(xx*16, yy*16, 16, 16, 0, Entity.COMIDA);
 						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
 						Game.entities.add(comida);
+						Game.comida_contagem += 10;
 					}else {
 						tiles[xx + (yy * WIDTH)] = new FloorTile(xx*16, yy*16, Tile.TILE_FLOOR);
 					}

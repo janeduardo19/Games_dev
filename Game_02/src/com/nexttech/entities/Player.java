@@ -38,7 +38,27 @@ public class Player extends Entity{
 			y+=speed;
 			lastDir = 2;
 		}
+		
+		pegaComida();
+		
+		if(Game.comida_contagem == Game.comida_atual) {
+			System.out.println("Ganhamos o jogo!");
+		}
 	}
+	
+	public void pegaComida() {
+		for(int i = 0; i < Game.entities.size(); i++) {
+			Entity current = Game.entities.get(i);
+			if(current instanceof Comida) {
+				if(Entity.isColidding(this, current)) {
+					Game.comida_atual += 10;
+					Game.entities.remove(i);
+					return;
+				}
+			}
+		}
+	}
+	
 	public void render(Graphics g) {
 		if(lastDir == 1) {
 			super.render(g);

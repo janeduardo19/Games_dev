@@ -37,6 +37,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static World world;
 	public static Player player;
 	public static JFrame frame;
+	public static int comida_contagem = 0;
+	public static int comida_atual = 0;
 	public UI ui;
 	
 	public Game(){
